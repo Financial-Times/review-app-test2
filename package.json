@@ -1,0 +1,24 @@
+{
+  "name": "review-test-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "process": "node ./worker.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Financial-Times/review-test-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Financial-Times/review-test-app/issues"
+  },
+  "homepage": "https://github.com/Financial-Times/review-test-app#readme",
+  "dependencies": {
+    "knex": "^0.15.2",
+    "pg": "^7.6.0"
+  }
+}
