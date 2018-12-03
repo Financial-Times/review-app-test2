@@ -131,7 +131,11 @@ const waitTillReviewAppCreated = (data) => {
 };
 
 const getAppName = async (appId) => {
-	const headers = await herokuHeaders();
+	const headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/vnd.heroku+json; version=3.review-apps',
+    Authorization: `Bearer ${herokuToken}`
+  }
 	return fetch(getAppUrl(appId), {
 		headers
 	})
@@ -205,19 +209,21 @@ async function task (app, options) {
 }
 
 (async () => {
-  // try {
+  try {
   //   const res = await pipelineInfo('my-pipeline')
   //   const json = await res.json()
   //   console.log(res)
-  // } catch (err) {
-  //   console.log(err)
-  // }
-  await task('ys-pipeline', { 
-    repoName: 'review-app-test2',
-    branch: 'branch2',
-    commit: '63bab90957e024468ff28e2151b4e00ad295891e',
-    githubToken: 'e696faeeec6127e22bacbe24b8a55466f18fb7ba'
-  })
+  
+  //   console.log(err
+    await task('ys-pipeline', { 
+      repoName: 'review-app-test2',
+      branch: 'branch2',
+      commit: '8afcdcfa25bad1d72073f51a16a14c6c3c93e4f1',
+      githubToken: 'd6ff7abf6ef88e78f3d3090506412021af86e509'
+    })
+  } catch (err) {
+    console.log(err)
+  }
 })();
 
 /**

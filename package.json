@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Financial-Times/review-test-app#readme",
   "dependencies": {
+    "denodeify": "^1.2.1",
     "isomorphic-fetch": "^2.2.1",
     "knex": "^0.15.2",
     "p-retry": "^2.0.0",
