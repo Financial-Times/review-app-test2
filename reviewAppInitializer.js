@@ -235,7 +235,6 @@ const init = async () => {
         const { status } = json
         console.log(`Got e2e tests status: ${status}`)
         if (status !== 'running') {
-          console.log('--------------------')
           process.exit(status === 'success' ? 0 : 1)
           clearInterval(interval)
         } else {
