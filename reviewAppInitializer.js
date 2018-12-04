@@ -151,9 +151,7 @@ const getAppName = async (appId) => {
     .then(throwIfNotOk)
     .then(res => res.json())
     .then((result) => {
-      console.log('0000000000000000000000', result)
-      const { name } = result;
-      return name;
+      return { name, web_url } = result;
     });
 };
 
@@ -212,8 +210,10 @@ const createReviewApp = async (branch, commit, pipelineId) => {
 		.then(res => res.json())
 		.then(waitTillReviewAppCreated)
 		.then(getAppName)
-		.then(appName => {
-			console.log(`New review-app name: ${appName}`);
+		.then(response => {
+      const { name, web_url } = response
+      console.log(`New review-app name: ${name}`);
+      return { name, web_url };
 		});
 }
   
@@ -223,7 +223,17 @@ const init = async () => {
     const pipelineId = await getPipelineId(pipeline); // const
     const branchName = await getBranchName(); // dynamic
     const lastCommit = await getLastCommit(branchName); // dynamic
-    await createReviewApp(branchName, lastCommit, pipelineId);
+    const app = await createReviewApp(branchName, lastCommit, pipelineId);
+    console.log('----------------app: ', app)
+    try {
+      const response = await fetch(app.web_url)
+      console.log(response)
+    } catch (err) {
+      console.log(err)
+    }
+    
+
+
 
     // TODO:
     // By now the newly creatd review-app is up and running,
