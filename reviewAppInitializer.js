@@ -86,7 +86,7 @@ const getLastCommit = async (branch) => {
 // We need to set the 'source_blob' param in the create review-app api call.
 // from the docs: "URL where gzipped tar archive of source code for build was downloaded."
 const getGithubArchiveRedirectUrl = async (branch) => {
-  console.log(`Getting github archived redirect url from branch: ${branch}...`);
+  console.log(`Getting github archived redirect url for branch: ${branch}...`);
   const url = `https://api.github.com/repos/Financial-Times/${repo}/tarball/${branch}`;
   const res = await fetch(url, {
 		headers: githubHeaders,
@@ -181,7 +181,7 @@ const deleteGitBranchReviewApp = ({ pipelineId, branch, headers }) => {
 // Create the review-app.
 // if its already exist, delete it and re-create it.
 const createReviewApp = async (branch, commit, pipelineId) => {
-  console.log(`inside create review app branch: ${branch} ${commit} ${pipelineId}`)
+  console.log(`Creating review app for branch: ${branch}, commit: ${commit} & pipelineId ${pipelineId}...`)
   const headers = herokuHeaders;
   const body = {
 		pipeline: pipelineId,
@@ -212,13 +212,13 @@ const createReviewApp = async (branch, commit, pipelineId) => {
 		.then(waitTillReviewAppCreated)
 		.then(getAppName)
 		.then(appName => {
-			console.log(appName);
+			console.log(`New review-app name: ${appName}`);
 		});
 }
   
 const init = async () => {
   try {
-    console.log('inside init')
+    console.log('Starting process...')
     const pipelineId = await getPipelineId(pipeline); // const
     const branchName = await getBranchName(); // dynamic
     const lastCommit = await getLastCommit(branchName); // dynamic
