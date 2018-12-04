@@ -83,16 +83,19 @@ const getLastCommit = async (branch) => {
 // We need to set the 'source_blob' param in the create review-app api call.
 // from the docs: "URL where gzipped tar archive of source code for build was downloaded."
 const getGithubArchiveRedirectUrl = async (branch) => {
+  console.log('inside getGithub....')
   const url = `https://api.github.com/repos/Financial-Times/${repo}/tarball/${branch}`;
   const res = await fetch(url, {
 		headers: githubHeaders,
 		redirect: 'manual' // Don't follow redirect, just want the URL
   })
+  console.log('inside getGithub... res', res)
   if (res.status !== 302) {
     throw new Error(`Unexpected response for ${url} (${status})`);
   }
   const { headers: { _headers: { location } } } = res;
   const [ redirectUrl ] = location || [];
+  console.log('inside getGithub... redirectUrl ', redirectUrl)
   return redirectUrl;
 }
 
@@ -173,6 +176,7 @@ const deleteGitBranchReviewApp = ({ pipelineId, branch, headers }) => {
 // Create the review-app.
 // if its already exist, delete it and re-create it.
 const createReviewApp = async (branch, commit, pipelineId) => {
+  console.log(`inside create review app branch: ${branch} ${comit} ${pipelineId}`)
   const headers = herokuHeaders;
   const body = {
 		pipeline: pipelineId,
