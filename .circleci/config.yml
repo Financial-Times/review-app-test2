@@ -4,5 +4,6 @@ jobs:
     docker:
       - image: node:8.10
     steps:
-      - checkout # check out the code in the project directory
-      - run: npm run  process
+      - checkout
+      - run: npm install
+      - run: npm run process
