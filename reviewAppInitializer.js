@@ -5,8 +5,8 @@ const denodeify = require('denodeify');
 // ENV variables.
 const pipeline = process.env.PIPELINE || 'ys-pipeline'
 const repo = process.env.REPO || 'review-app-test2'
-const githubToken = process.env.GITHUB_TOKEN
-const herokuToken = process.env.HEROKU_TOKEN
+const githubToken = process.env.GITHUB_TOKEN || '199099d68a11084c8cb60f6185f8061092bb17d4'
+const herokuToken = process.env.HEROKU_TOKEN || '1b253aa3-9ebe-4b0f-b1af-f2848fb52df5'
 
 // API headers.
 const githubHeaders =  {
@@ -47,10 +47,12 @@ const throwIfNotOk = async res => {
 
 // TODO: could be a const.
 const getPipelineId = async pipeline => {
+  console.log('inside getPipelineId')
   const res = await fetch(`https://api.heroku.com/pipelines/${pipeline}`, {
 		headers: herokuHeaders
 	});
   const json = await res.json();
+  console.log('inside getPipelineId json: ', json)
   return json.id;
 }
 
@@ -205,6 +207,7 @@ const createReviewApp = async (branch, commit, pipelineId) => {
   
 const init = async () => {
   try {
+    console.log('inside init')
     const pipelineId = await getPipelineId(pipeline); // const
     const branchName = await getBranchName(); // dynamic
     const lastCommit = await getLastCommit(branchName); // dynamic
