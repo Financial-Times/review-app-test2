@@ -176,7 +176,7 @@ const deleteGitBranchReviewApp = ({ pipelineId, branch, headers }) => {
 // Create the review-app.
 // if its already exist, delete it and re-create it.
 const createReviewApp = async (branch, commit, pipelineId) => {
-  console.log(`inside create review app branch: ${branch} ${comit} ${pipelineId}`)
+  console.log(`inside create review app branch: ${branch} ${commit} ${pipelineId}`)
   const headers = herokuHeaders;
   const body = {
 		pipeline: pipelineId,
