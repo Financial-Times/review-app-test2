@@ -224,10 +224,12 @@ const init = async () => {
     const branchName = await getBranchName(); // dynamic
     const lastCommit = await getLastCommit(branchName); // dynamic
     const app = await createReviewApp(branchName, lastCommit, pipelineId);
-    console.log('----------------app: ', app)
+    
     try {
-      const response = await fetch(app.web_url)
-      console.log(response)
+      const res = await fetch(app.web_url)
+      throwIfNotOk(response)
+      const json = await res.json()
+      console.log(json)
     } catch (err) {
       console.log(err)
     }
