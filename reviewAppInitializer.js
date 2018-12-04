@@ -3,13 +3,10 @@ const pRetry = require('p-retry');
 const denodeify = require('denodeify');
 
 // ENV variables.
-const pipeline = process.env.PIPELINE || 'ys-pipeline'
-const repo = process.env.REPO || 'review-app-test2'
+const pipeline = process.env.PIPELINE
+const repo = process.env.REPO
 const githubToken = process.env.GITHUB_TOKEN
 const herokuToken = process.env.HEROKU_TOKEN
-
-console.log('==============================> ', githubToken)
-console.log('==============================> ', herokuToken)
 
 // API headers.
 const githubHeaders =  {
@@ -50,55 +47,57 @@ const throwIfNotOk = async res => {
 
 // TODO: could be a const.
 const getPipelineId = async pipeline => {
-  console.log('inside getPipelineId')
+  console.log(`Getting pipeline "${pipeline}" id...`);
   const res = await fetch(`https://api.heroku.com/pipelines/${pipeline}`, {
 		headers: herokuHeaders
 	});
   const json = await res.json();
-  console.log('inside getPipelineId json: ', json)
+  console.log(`Got id for pipeline: ${json.id}`)
   return json.id;
 }
 
 // Get current branch name by running shell command.
-const getBranchName = async () => {console.log('inside getBranch')
+const getBranchName = async () => {
+  console.log(`Getting branch name...`);
   const branches = await exec(`git branch`)
-  console.log('inside get branch branches: ', branches)
   const name = branches.split(/\n/)[0].replace('*', '').trim()
+  console.log(`Got branch name: ${name}`);
   return name
 }
 
 // Get last commit name by running shell command.
 const getLastCommit = async (branch) => {
-  console.log('inside getLastCommit github headers', githubHeaders)
+  console.log(`API: Getting last commit for branch: ${branch}...`);
   // We can use github API as well.
   const res = await fetch(`https://api.github.com/repos/Financial-Times/${repo}/commits/${branch}`, {
     headers: githubHeaders
   });
   const json = await res.json();
+  console.log(`API: Got last commit: ${json.sha}`);
   //return json.sha; // last commit.
 
   // Using the shell.
+  console.log(`Shell: Getting last commit for branch: ${branch}...`);
   const lastCommit = await exec('git rev-parse HEAD')
-  console.log('lastCommit', lastCommit)
+  console.log(`Shell: Got last commit: ${lastCommit}`);
   return lastCommit;
 }
 
 // We need to set the 'source_blob' param in the create review-app api call.
 // from the docs: "URL where gzipped tar archive of source code for build was downloaded."
 const getGithubArchiveRedirectUrl = async (branch) => {
-  console.log('inside getGithub....')
+  console.log(`Getting github archived redirect url from branch: ${branch}...`);
   const url = `https://api.github.com/repos/Financial-Times/${repo}/tarball/${branch}`;
   const res = await fetch(url, {
 		headers: githubHeaders,
 		redirect: 'manual' // Don't follow redirect, just want the URL
   })
-  console.log('inside getGithub... res', res)
   if (res.status !== 302) {
     throw new Error(`Unexpected response for ${url} (${res.status})`);
   }
   const { headers: { _headers: { location } } } = res;
   const [ redirectUrl ] = location || [];
-  console.log('inside getGithub... redirectUrl ', redirectUrl)
+  console.log(`Github archived redirect url: ${redirectUrl}`)
   return redirectUrl;
 }
 
@@ -171,7 +170,10 @@ const deleteGitBranchReviewApp = ({ pipelineId, branch, headers }) => {
 	const deleteReviewApp = (reviewAppId) => fetch(getReviewAppUrl(reviewAppId), {
 		headers,
 		method: 'delete'
-	}).then(throwIfNotOk);
+	}).then((res) => {
+    console.log(`Review-app: ${reviewAppId} was deleted`)
+    throwIfNotOk(res)
+  });
 
 	return getReviewAppId(pipelineId).then(deleteReviewApp);
 };
