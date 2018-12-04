@@ -5,7 +5,7 @@ const denodeify = require('denodeify');
 // ENV variables.
 const pipeline = process.env.PIPELINE || 'ys-pipeline'
 const repo = process.env.REPO || 'review-app-test2'
-const githubToken = process.env.GITHUB_TOKEN || '6f53c1a3e86508cd0b36da05cdaee60f67286a1b'
+const githubToken = process.env.GITHUB_TOKEN || 'f9f0cae03c3bb86b706bc06fdbbe6dc9790d6830'
 const herokuToken = process.env.HEROKU_TOKEN || '1b253aa3-9ebe-4b0f-b1af-f2848fb52df5'
 
 // API headers.
@@ -90,7 +90,6 @@ const getGithubArchiveRedirectUrl = async (branch) => {
 		redirect: 'manual' // Don't follow redirect, just want the URL
   })
   console.log('inside getGithub... res', res)
-  const json = await res.json()
   if (res.status !== 302) {
     throw new Error(`Unexpected response for ${url} (${res.status})`);
   }
