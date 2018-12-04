@@ -227,7 +227,7 @@ const init = async () => {
     
     try {
       const res = await fetch(app.web_url)
-      throwIfNotOk(response)
+      throwIfNotOk(res)
       const json = await res.json()
       console.log(json)
     } catch (err) {
