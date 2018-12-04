@@ -1,7 +1,7 @@
 {
   "name": "review-test-app",
   "scripts": {
-
+    "postdeploy": "./postdeploy.sh"
   },
   "env": {
     
