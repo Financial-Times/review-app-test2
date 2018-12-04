@@ -114,7 +114,7 @@ const waitTillReviewAppCreated = (data) => {
       .then(res => res.json())
       .then(data => {
         const { status, message, app } = data;
-
+        if (status == 'errored') console.log(data)
         if (status === REVIEW_APP_STATUSES.deleted) {
           throw new pRetry.AbortError(`Review app was deleted: ${message}`);
         }
