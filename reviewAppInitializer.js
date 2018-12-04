@@ -57,15 +57,16 @@ const getPipelineId = async pipeline => {
 }
 
 // Get current branch name by running shell command.
-const getBranchName = async () => {
+const getBranchName = async () => {console.log('inside getBranch')
   const branches = await exec(`git branch`)
+  console.log('inside get branch branches: ', branches)
   const name = branches.split(/\n/)[0].replace('*', '').trim()
   return name
 }
 
 // Get last commit name by running shell command.
 const getLastCommit = async (branch) => {
-  
+  console.log('inside getLastCommit github headers', githubHeaders)
   // We can use github API as well.
   const res = await fetch(`https://api.github.com/repos/Financial-Times/${repo}/commits/${branch}`, {
     headers: githubHeaders
@@ -75,6 +76,7 @@ const getLastCommit = async (branch) => {
 
   // Using the shell.
   const lastCommit = await exec('git rev-parse HEAD')
+  console.log('lastCommit', lastCommit)
   return lastCommit;
 }
 
