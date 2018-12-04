@@ -1,7 +1,8 @@
 {
   "name": "review-test-app",
   "scripts": {
-    
+    "postdeploy": "npm run bootstrap",
+    "pr-predestroy": "npm run teardown"
   },
   "env": {
     
