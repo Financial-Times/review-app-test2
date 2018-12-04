@@ -228,15 +228,16 @@ const init = async () => {
     let count = 0;
     const interval = setInterval(async () => {
       try {
-        console.log(`Checking e2e tests status #${count}`)
+        console.log(`Checking e2e tests status #${count++}`)
         const res = await fetch(app.web_url)
         throwIfNotOk(res)
         const json = await res.json()
         const { status } = json
         console.log(`Got e2e tests status: ${status}`)
         if (status !== 'running') {
+          console.log('--------------------')
+          process.exit(status === 'success' ? 0 : 1)
           clearInterval(interval)
-          process.exit(status === 'sucess' ? 0 : 1)
         } else {
           console.log('e2e tests are still running')
         }
