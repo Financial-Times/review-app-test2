@@ -225,14 +225,28 @@ const init = async () => {
     const lastCommit = await getLastCommit(branchName); // dynamic
     const app = await createReviewApp(branchName, lastCommit, pipelineId);
     
-    try {
-      const res = await fetch(app.web_url)
-      throwIfNotOk(res)
-      const json = await res.json()
-      console.log(json)
-    } catch (err) {
-      console.log(err)
-    }
+    let count = 0;
+    const interval = setInterval(async () => {
+      try {
+        console.log(`Checking e2e tests status #${count}`)
+        const res = await fetch(app.web_url)
+        throwIfNotOk(res)
+        const json = await res.json()
+        const { status } = json
+        console.log(`Got e2e tests status: ${status}`)
+        if (status !== 'running') {
+          clearInterval(interval)
+          process.exit(status === 'sucess' ? 0 : 1)
+        } else {
+          console.log('e2e tests are still running')
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }, 2000);
+
+      
+    
     
 
 
