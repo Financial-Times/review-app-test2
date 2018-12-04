@@ -5,7 +5,7 @@ const denodeify = require('denodeify');
 // ENV variables.
 const pipeline = process.env.PIPELINE || 'ys-pipeline'
 const repo = process.env.REPO || 'review-app-test2'
-const githubToken = process.env.GITHUB_TOKEN || 'f9f0cae03c3bb86b706bc06fdbbe6dc9790d6830'
+const githubToken = process.env.GITHUB_TOKEN || 'ed81d139b6fe9d0f334b6c3af6ece0d88b13b254'
 const herokuToken = process.env.HEROKU_TOKEN || '1b253aa3-9ebe-4b0f-b1af-f2848fb52df5'
 
 // API headers.
