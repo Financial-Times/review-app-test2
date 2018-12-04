@@ -151,6 +151,7 @@ const getAppName = async (appId) => {
     .then(throwIfNotOk)
     .then(res => res.json())
     .then((result) => {
+      console.log('0000000000000000000000', result)
       const { name } = result;
       return name;
     });
