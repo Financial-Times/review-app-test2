@@ -19,6 +19,6 @@
   "homepage": "https://github.com/Financial-Times/review-test-app#readme",
   "dependencies": {
     "knex": "^0.15.2",
-    "pg": "^7.6.0"
+    "pg": "^7.18.2"
   }
 }
